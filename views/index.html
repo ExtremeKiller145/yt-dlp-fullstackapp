@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube to mp3 Converter</title>
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-6">
+    <!-- Title -->
+    <h1 class="text-6xl font-extrabold text-red-600">YouTube Downloader</h1>
+    
+    <!-- Subtitle -->
+    <h2 class="text-xl text-gray-700">By L_Xtreme</h2>
+    
+    <!-- Form -->
+    <form action="/submit" method="post" class="flex items-center space-x-2 w-full max-w-xl">
+        <input type="text" name="url" placeholder="Insert URL here" class="border border-gray-300 p-2 rounded-md w-full" autocomplete="off">
+        
+        <!-- Dropdown Menu -->
+        <select name="format" class="border border-gray-300 p-2 rounded-md">
+            <option value="mp3">mp3</option>
+            <option value="mp4">mp4</option>
+            <option value="3gp">3gp</option>
+            <option value="aac">aac</option>
+            <option value="flv">flv</option>
+            <option value="m4a">m4a</option>
+            <option value="ogg">ogg</option>
+            <option value="wav">wav</option>
+            <option value="webm">webm</option>
+        </select>
+        
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md">Confirm</button>
+    </form>
+
+    <p class="text-sm text-gray-600 mt-4">Choose your preferred format from the dropdown menu and paste the YouTube URL in the box above. Click 'Confirm' to download. Please wait, as big files may take a while.</p>
+</body>
+</html>

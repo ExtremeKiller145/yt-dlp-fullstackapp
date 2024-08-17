@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center min-h-screen bg-red-100 text-red-800">
+    <div class="text-center p-6 bg-white shadow-md rounded-md">
+        <h1 class="text-4xl font-extrabold mb-4 text-center">Error</h1>
+        <p class="text-lg text-red-900 mt-4 text-center"> <%= errorMessage %> </p>
+        <p class="text-sm text-center">Redirecting back to the main site in 5 seconds...</p>
+    </div>
+    <script>
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 5000);
+    </script>
+</body>
+</html>

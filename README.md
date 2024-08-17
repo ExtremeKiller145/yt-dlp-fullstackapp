@@ -1,0 +1,1 @@
+Free and open source, not responsible for anything, not helping if u have problems with ts
