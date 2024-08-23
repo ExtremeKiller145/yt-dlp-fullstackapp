@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 const ejs = require('ejs');
 
 const app = express();
@@ -64,15 +64,22 @@ app.post('/submit', (req, res) => {
     const uuid = crypto.randomUUID();
     console.log(`uuid created is ${uuid}`);
 
-    try {
-        const formatType = getFormatType(fileFormat);
-        if (formatType == 'audio') {
-            execSync(`./youtube-to-audio.sh ${uuid} ${url} ${fileFormat}`, { stdio: 'inherit' });
-        } else if (formatType == 'video'){
-            execSync(`./youtube-to-video.sh ${uuid} ${url} ${fileFormat}`, { stdio: 'inherit' });
-        } else {
-            console.log('Invalid file format provided');
-            return res.status(400).render('error', { errorMessage: 'Format selected is incompatible' });
+    const formatType = getFormatType(fileFormat);
+    let command;
+
+    if (formatType == 'audio') {
+        command = `./youtube-to-audio.sh ${uuid} ${url} ${fileFormat}`;
+    } else if (formatType == 'video') {
+        command = `./youtube-to-video.sh ${uuid} ${url} ${fileFormat}`;
+    } else {
+        console.log('Invalid file format provided');
+        return res.status(400).render('error', { errorMessage: 'Format selected is incompatible' });
+    }
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing script: ${error.message}`);
+            return res.status(500).render('error', { errorMessage: `Error generating file. Was your URL correct? You gave: ${url}` });
         }
 
         const filePath = path.join(__dirname, 'storage', `${uuid}.${fileFormat}`);
@@ -83,14 +90,11 @@ app.post('/submit', (req, res) => {
                 console.log(`File ${filePath} is not .${fileFormat}`);
                 return res.status(400).render('error', { errorMessage: `Generated file is not a .${fileFormat} file` });
             }
-            downloadAndDeleteFile(res, filePath, uuid);
+            downloadAndDeleteFile(res, filePath, fileFormat, uuid);
         } else {
             res.status(404).render('error', { errorMessage: 'File not found' });
         }
-    } catch (error) {
-        console.error(`Error executing script: ${error.message}`);
-        return res.status(500).render('error', { errorMessage: `Error generating file. Was your URL correct? You gave: ${url}` });
-    }
+    });
 });
 
 app.listen(port, () => {
